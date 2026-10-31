@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "An MCP server that lets an agent design Minecraft schematics from a prompt and export them as .litematic files"
 readme = "README.md"
 requires-python = ">=3.11"
+license = "MIT"
 dependencies = [
     "mcp>=2.3",
     "nbtlib>=2.0",
