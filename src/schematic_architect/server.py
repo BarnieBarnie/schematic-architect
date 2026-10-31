@@ -19,8 +19,8 @@ Workflow: new_design, then shapes (box, line, cylinder, sphere, pyramid, set_blo
 symmetrize, undo), check your work with preview (an image) or layer (text), check cost with materials, then export.
 
 Coordinates: integers, y is up, x east, z south. Shapes take inclusive corners. Positions can be anywhere: the export
-moves the lowest corner to 0, 0, 0. Every position inside the bounds with no block is air, and a bot building the
-schematic clears what stands there, so keep a build compact.
+moves the lowest corner to 0, 0, 0. Every position inside the bounds with no block is structure void: a bot building
+the schematic leaves what stands there (and can scaffold through it), so hollow insides are not cleared.
 
 Blocks: paint with a palette role ({', '.join(ROLES)}) so the player can swap the palette later (early game oak,
 late game quartz), or name a block ("oak_log", "minecraft:oak_stairs[facing=north]") where a role does not fit.

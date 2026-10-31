@@ -24,6 +24,8 @@ def test_round_trip(tmp_path):
     name, blocks = litematic.read(path)
     assert name == "tower"
     assert blocks == d.resolved()
+    region = litemapy.Schematic.load(str(path)).regions["tower"]
+    assert region[0, 0, 0].id == "minecraft:structure_void"  # a corner of the cylinder's bounds holds no block
 
 
 def test_pack_runs_entries_over_word_ends():
@@ -43,7 +45,7 @@ def test_litemapy_reads_it(tmp_path):
     seen = {}
     for x, y, z in region.block_positions():
         state = region[x, y, z]
-        if state.id != "minecraft:air":
+        if state.id not in ("minecraft:air", "minecraft:structure_void"):
             props = ",".join(f"{k}={v}" for k, v in sorted(state.properties()))
             seen[(x, y, z)] = state.id + (f"[{props}]" if props else "")
     norm = {p: b.split("[")[0] + ("[" + ",".join(sorted(b[b.index("[") + 1:-1].split(","))) + "]" if "[" in b else "")

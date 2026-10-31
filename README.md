@@ -61,8 +61,8 @@ Later in the game: "rebuild the cross in quartz" swaps the palette with `set_pal
 
 ## Good to know
 
-- Every position inside the build's bounds that holds no block is **air**, and a bot building it clears what stands
-  there. Keep builds compact; a hollow dome is cleared out inside, which is usually what you want.
+- Every position inside the build's bounds that holds no block is **structure void**: a bot building it leaves what
+  stands there and can put scaffolding through it. A hollow dome built into a hill is not dug out inside.
 - AntCraft's ghost shows at most 4096 blocks of a build; bots build all of it.
 - Block names are not checked against the game: a misspelt block becomes air when the game loads the file.
 - Turning and mirroring (`copy`, `symmetrize`) turn `facing`, `axis` and sign `rotation`; stair corner shapes and fences

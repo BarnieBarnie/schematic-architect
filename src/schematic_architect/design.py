@@ -1,7 +1,7 @@
 """A design: blocks at integer positions (y up), each a palette role ("@primary") or a block state ("minecraft:oak_log[axis=x]").
 
 Shapes take inclusive corners. Positions may be anywhere; the export moves the lowest corner to 0, 0, 0, and every
-position inside the bounds that holds no block is air (a bot building it clears what stands there)."""
+position inside the bounds that holds no block is structure void (a bot building it leaves what stands there)."""
 
 import math
 import re

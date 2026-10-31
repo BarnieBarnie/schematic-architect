@@ -12,6 +12,8 @@ from .design import Pos, join_state, split_state
 # the old form as current and read every block as air.
 DATA_VERSION = 4556
 AIR = "minecraft:air"
+# Empty positions are written as structure void: bots leave what stands there and can scaffold through it.
+VOID = "minecraft:structure_void"
 
 
 def _vec(x, y, z) -> Compound:
@@ -50,9 +52,10 @@ def unpack(words: list[int], bits: int, count: int) -> list[int]:
 
 
 def write(path: Path, name: str, blocks: dict[Pos, str], author: str = "schematic-architect", description: str = ""):
-    """Writes blocks (lowest corner at 0, 0, 0) as a one-region schematic named name; the rest of the bounds is air."""
+    """Writes blocks (lowest corner at 0, 0, 0) as a one-region schematic named name; the rest of the bounds is
+    structure void."""
     sx, sy, sz = (max(p[i] for p in blocks) + 1 for i in range(3)) if blocks else (1, 1, 1)
-    palette = [AIR] + sorted(set(blocks.values()))
+    palette = [VOID] + sorted(set(blocks.values()))
     index = {state: i for i, state in enumerate(palette)}
     values = [0] * (sx * sy * sz)
     for (x, y, z), state in blocks.items():
@@ -97,7 +100,7 @@ def write(path: Path, name: str, blocks: dict[Pos, str], author: str = "schemati
 
 
 def read(path: Path) -> tuple[str, dict[Pos, str]]:
-    """The name and blocks of a schematic, its regions merged from their lowest corner (later regions win), air left out."""
+    """The name and blocks of a schematic, its regions merged from their lowest corner (later regions win), air and structure void left out."""
     root = load(path, gzipped=True)
     name = str(root["Metadata"]["Name"])
     blocks: dict[Pos, str] = {}
@@ -112,7 +115,7 @@ def read(path: Path) -> tuple[str, dict[Pos, str]]:
         for i, v in enumerate(values):
             x, z, y = i % sx, (i // sx) % sz, i // (sx * sz)
             p = (lo[0] + x, lo[1] + y, lo[2] + z)
-            if v < len(palette) and palette[v] not in (AIR, "minecraft:cave_air"):
+            if v < len(palette) and palette[v] not in (AIR, VOID, "minecraft:cave_air"):
                 blocks[p] = palette[v]
             else:
                 blocks.pop(p, None)
